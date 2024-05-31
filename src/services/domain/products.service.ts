@@ -1,11 +1,14 @@
 import { Prisma, Product } from '@prisma/client'
+import { injectable } from 'inversify'
+import {
+  IProductCreateData,
+  IProductsService,
+  IProductUpdateData,
+} from '../../interfaces/services/products.service.interface.js'
 import prisma from '../db/prisma.js'
 
-interface IProductCreateData extends Omit<Prisma.ProductCreateInput, 'id'> {}
-interface IProductUpdateData
-  extends Partial<Omit<Prisma.ProductUpdateInput, 'id'>> {}
-
-class ProductsService {
+@injectable()
+export class ProductsService implements IProductsService {
   async getProductsList(
     queryParams?: Prisma.ProductFindManyArgs,
   ): Promise<Product[]> {

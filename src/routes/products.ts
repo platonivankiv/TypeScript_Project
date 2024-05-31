@@ -1,12 +1,14 @@
 import { Router } from 'express'
-import productsController from '../controllers/products.controller.js'
+import { ProductsController } from '../controllers/products.controller.js'
+import { container } from '../inversify.config.js'
 
 const router = Router()
+const productsController = container.get<ProductsController>(ProductsController)
 
-router.get('/', productsController.getProductsList)
-router.get('/:id', productsController.getOneProduct)
-router.post('/', productsController.createProduct)
-router.put('/:id', productsController.updateProduct)
-router.delete('/:id', productsController.deleteProduct)
+router.get('/', productsController.getProductsList.bind(productsController))
+router.get('/:id', productsController.getOneProduct.bind(productsController))
+router.post('/', productsController.createProduct.bind(productsController))
+router.put('/:id', productsController.updateProduct.bind(productsController))
+router.delete('/:id', productsController.deleteProduct.bind(productsController))
 
 export default router
